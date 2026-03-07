@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:travel/features/scenic_spot/scenic_spot.dart';
 import 'package:travel/features/splash/splash_page.dart';
 
 import '../features/error/NotFoundPage.dart';
@@ -16,6 +17,11 @@ final router = GoRouter(
       path: '/home',
       name: "home",
       builder: (context, state) => HomePage(),
+    ),
+    GoRoute(
+      path: '/scenic_spot',
+      name: "scenic_spot",
+      builder: (context, state) => ScenicSpotPage(),
     ),
   ],
   errorBuilder: (context, state) => NotFoundpage(),

@@ -72,6 +72,7 @@ flutter:
       fonts:
         - asset: assets/fonts/montserrat-k7gza.ttf
 
+# 素材图应为 1152*1152，logo应为 480*480 置于素材图中间
 flutter_native_splash:
   color: "#FFFFFF"                      # 启动屏背景色
   image: assets/images/logo.png         # 启动屏 Logo 图片
