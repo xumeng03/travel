@@ -6,6 +6,7 @@ import 'package:travel/features/splash/splash_page.dart';
 import '../features/error/not_found_page.dart';
 import '../features/favorites/favorites_page.dart';
 import '../features/home/home_page.dart';
+import '../features/profile/profile_page.dart';
 import '../features/tickets/tickets_page.dart';
 
 final router = GoRouter(
@@ -35,6 +36,11 @@ final router = GoRouter(
           path: '/favorites',
           name: "favorites",
           builder: (context, state) => const FavoritesPage(),
+        ),
+        GoRoute(
+          path: '/profile',
+          name: "profile",
+          builder: (context, state) => const ProfilePage(),
         ),
       ],
     ),

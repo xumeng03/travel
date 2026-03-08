@@ -86,7 +86,7 @@ class BottomNav extends StatelessWidget {
             context.goNamed('favorites');
             break;
           case 3:
-            context.goNamed('personal');
+            context.goNamed('profile');
             break;
           default:
             print("index ${index} not found!");
