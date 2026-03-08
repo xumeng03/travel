@@ -63,8 +63,10 @@ class BottomNav extends StatelessWidget {
 
   int _currentIndex(BuildContext context) {
     final path = GoRouterState.of(context).uri.path;
-    if (path.startsWith('/tickets')) return 1;
-    if (path.startsWith('/favorites')) return 2;
+    if (path.startsWith('/tickets'))      return 1;
+    if (path.startsWith('/favorites'))    return 2;
+    if (path.startsWith('/profile'))      return 3;
+    if (path.startsWith('/personal_info')) return 3;
     return 0;
   }
 

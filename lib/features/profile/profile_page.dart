@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 const _blue = Color(0xFF176FF2);
 const _textDark = Color(0xFF232323);
@@ -11,13 +12,13 @@ const _red = Color(0xFFEC5655);
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
-  /// 菜单项数据：图标、标签、图标背景色
+  /// 菜单项数据：图标、标签、图标背景色、跳转路由名（null 表示暂未实现）
   static const _menuItems = [
-    (Icons.person_outline, 'Personal Info', _blue),
-    (Icons.notifications_outlined, 'Notifications', _orange),
-    (Icons.lock_outline, 'Privacy & Security', _blue),
-    (Icons.settings_outlined, 'App Settings', _textGray),
-    (Icons.help_outline, 'Help & Support', _red),
+    (Icons.person_outline,       'Personal Info',     _blue,     'personal_info'),
+    (Icons.notifications_outlined,'Notifications',    _orange,   null),
+    (Icons.lock_outline,         'Privacy & Security',_blue,     null),
+    (Icons.settings_outlined,    'App Settings',      _textGray, null),
+    (Icons.help_outline,         'Help & Support',    _red,      null),
   ];
 
   @override
@@ -31,7 +32,7 @@ class ProfilePage extends StatelessWidget {
           children: [
             _buildProfileCard(),
             const SizedBox(height: 24),
-            _buildMenuList(),
+            _buildMenuList(context),
             const SizedBox(height: 24),
             _buildLogoutButton(),
             const SizedBox(height: 20),
@@ -371,60 +372,76 @@ class ProfilePage extends StatelessWidget {
   }
 
   /// 构建设置菜单列表
-  Widget _buildMenuList() {
+  Widget _buildMenuList(BuildContext context) {
     return Column(
-      children: _menuItems
-          .map((item) => Padding(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: _buildMenuItem(item.$1, item.$2, item.$3),
-              ))
-          .toList(),
+      children: [
+        for (final (icon, label, color, routeName) in _menuItems)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: _buildMenuItem(
+              context,
+              icon: icon,
+              label: label,
+              color: color,
+              routeName: routeName,
+            ),
+          ),
+      ],
     );
   }
 
   /// 构建单个菜单项
-  /// 左侧彩色图标 + 标签文字，右侧箭头
-  Widget _buildMenuItem(IconData icon, String label, Color color) {
-    return Container(
-      height: 88,
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: const Color(0xFF0038FF).withValues(alpha: 0.08),
-            blurRadius: 19,
-            offset: const Offset(0, 6),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          // 彩色图标盒子
-          Container(
-            width: 48,
-            height: 48,
-            decoration: BoxDecoration(
-              color: color.withValues(alpha: 0.10),
-              borderRadius: BorderRadius.circular(16),
+  /// 左侧彩色图标 + 标签文字，右侧箭头；routeName 不为 null 时可点击跳转
+  Widget _buildMenuItem(
+    BuildContext context, {
+    required IconData icon,
+    required String label,
+    required Color color,
+    required String? routeName,
+  }) {
+    return GestureDetector(
+      onTap: routeName != null ? () => context.pushNamed(routeName) : null,
+      child: Container(
+        height: 88,
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: const Color(0xFF0038FF).withValues(alpha: 0.08),
+              blurRadius: 19,
+              offset: const Offset(0, 6),
             ),
-            child: Icon(icon, size: 22, color: color),
-          ),
-          const SizedBox(width: 16),
-          // 标签
-          Expanded(
-            child: Text(
-              label,
-              style: const TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.bold,
-                color: _textDark,
+          ],
+        ),
+        child: Row(
+          children: [
+            // 彩色图标盒子
+            Container(
+              width: 48,
+              height: 48,
+              decoration: BoxDecoration(
+                color: color.withValues(alpha: 0.10),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Icon(icon, size: 22, color: color),
+            ),
+            const SizedBox(width: 16),
+            // 标签
+            Expanded(
+              child: Text(
+                label,
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                  color: _textDark,
+                ),
               ),
             ),
-          ),
-          const Icon(Icons.chevron_right, size: 20, color: _textGray),
-        ],
+            const Icon(Icons.chevron_right, size: 20, color: _textGray),
+          ],
+        ),
       ),
     );
   }
