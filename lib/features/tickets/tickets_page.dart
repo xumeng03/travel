@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../common/models/TicketData.dart';
+
 const _textDark = Color(0xFF232323);
 const _textGray = Color(0xFF606060);
 
@@ -11,37 +13,38 @@ class TicketsPage extends StatefulWidget {
 }
 
 class _TicketsPageState extends State<TicketsPage> {
-  final _tickets = [
-    {
-      'imageUrl': 'assets/images/explore_aspen.png',
-      'title': 'Coeurdes Alpes',
-      'location': 'Aspen, USA',
-      'statusLabel': 'Upcoming',
-      'statusColor': const Color(0xFF00C950),
-      'date': '2026-03-15',
-      'time': '14:00',
-      'ticketNumber': 'ASP-2026-001',
-    },
-    {
-      'imageUrl': 'assets/images/alley_palace.png',
-      'title': 'Alley Palace',
-      'location': 'Aspen, USA',
-      'statusLabel': 'Confirmed',
-      'statusColor': const Color(0xFF2B7FFF),
-      'date': '2026-04-20',
-      'time': '10:00',
-      'ticketNumber': 'MAL-2026-102',
-    },
-    {
-      'imageUrl': 'assets/images/alley_palace.png',
-      'title': 'Alley Palace',
-      'location': 'Aspen, USA',
-      'statusLabel': 'Confirmed',
-      'statusColor': const Color(0xFF2B7FFF),
-      'date': '2026-04-20',
-      'time': '10:00',
-      'ticketNumber': 'MAL-2026-102',
-    },
+  /// 票务列表（实际项目中数据来自 API）
+  final List<TicketData> _tickets = [
+    const TicketData(
+      imageUrl: 'assets/images/explore_aspen.png',
+      title: 'Coeurdes Alpes',
+      location: 'Aspen, USA',
+      statusLabel: 'Upcoming',
+      statusColor: Color(0xFF00C950),
+      date: '2026-03-15',
+      time: '14:00',
+      ticketNumber: 'ASP-2026-001',
+    ),
+    const TicketData(
+      imageUrl: 'assets/images/alley_palace.png',
+      title: 'Alley Palace',
+      location: 'Aspen, USA',
+      statusLabel: 'Confirmed',
+      statusColor: Color(0xFF2B7FFF),
+      date: '2026-04-20',
+      time: '10:00',
+      ticketNumber: 'MAL-2026-102',
+    ),
+    const TicketData(
+      imageUrl: 'assets/images/alley_palace.png',
+      title: 'Alley Palace',
+      location: 'Aspen, USA',
+      statusLabel: 'Confirmed',
+      statusColor: Color(0xFF2B7FFF),
+      date: '2026-04-20',
+      time: '10:00',
+      ticketNumber: 'MAL-2026-102',
+    ),
   ];
 
   @override
@@ -55,19 +58,11 @@ class _TicketsPageState extends State<TicketsPage> {
           children: [
             _buildHeader(),
             const SizedBox(height: 32),
-            ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              scrollDirection: Axis.vertical,
-              itemCount: _tickets.length,
-              itemBuilder: (context, index) {
-                final ticket = _tickets[index];
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 16),
-                  child: _buildTicketCard(ticket)
-                );
-              },
-            ),
+            for (final ticket in _tickets)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 16),
+                child: _buildTicketCard(ticket),
+              ),
           ],
         ),
       ),
@@ -119,7 +114,7 @@ class _TicketsPageState extends State<TicketsPage> {
 
   /// 构建票务卡片
   /// 白色圆角卡片，蓝色阴影，由图片区和详情区两部分组成
-  Widget _buildTicketCard(Map<String, Object> ticket) {
+  Widget _buildTicketCard(TicketData ticket) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -134,14 +129,14 @@ class _TicketsPageState extends State<TicketsPage> {
       ),
       clipBehavior: Clip.hardEdge,
       child: Column(
-        children: [_buildCardImage(ticket), _buildCardBody(ticket)],
+        children: [_buildCardImage(ticket), _buildCardDetail(ticket)],
       ),
     );
   }
 
   /// 构建卡片图片区域
   /// 高度 160px，底部渐变遮罩，左下角显示景点名和地址，右上角显示状态标签
-  Widget _buildCardImage(Map<String, Object> ticket) {
+  Widget _buildCardImage(TicketData ticket) {
     return SizedBox(
       height: 160,
       width: double.infinity,
@@ -149,7 +144,7 @@ class _TicketsPageState extends State<TicketsPage> {
         children: [
           // 背景图片
           Positioned.fill(
-            child: Image.asset(ticket['imageUrl'] as String, fit: BoxFit.cover),
+            child: Image.asset(ticket.imageUrl, fit: BoxFit.cover),
           ),
           // 渐变遮罩层
           Positioned.fill(
@@ -162,7 +157,7 @@ class _TicketsPageState extends State<TicketsPage> {
                     Colors.transparent,
                     Colors.black.withValues(alpha: 0.6),
                   ],
-                  stops: [0.4, 1.0],
+                  stops: const [0.4, 1.0],
                 ),
               ),
             ),
@@ -175,7 +170,7 @@ class _TicketsPageState extends State<TicketsPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  ticket['title'] as String,
+                  ticket.title,
                   style: const TextStyle(
                     fontFamily: 'Montserrat',
                     fontSize: 16,
@@ -193,7 +188,7 @@ class _TicketsPageState extends State<TicketsPage> {
                     ),
                     const SizedBox(width: 4),
                     Text(
-                      ticket['location'] as String,
+                      ticket.location,
                       style: const TextStyle(
                         fontSize: 12,
                         color: Colors.white70,
@@ -211,11 +206,11 @@ class _TicketsPageState extends State<TicketsPage> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
               decoration: BoxDecoration(
-                color: ticket['statusColor'] as Color,
+                color: ticket.statusColor,
                 borderRadius: BorderRadius.circular(999),
               ),
               child: Text(
-                ticket['statusLabel'] as String,
+                ticket.statusLabel,
                 style: const TextStyle(
                   fontSize: 10,
                   fontWeight: FontWeight.bold,
@@ -231,7 +226,7 @@ class _TicketsPageState extends State<TicketsPage> {
 
   /// 构建卡片详情区域
   /// 包含日期时间行、票号展示区（蓝色渐变背景）和查看二维码入口
-  Widget _buildCardBody(Map<String, Object> ticket) {
+  Widget _buildCardDetail(TicketData ticket) {
     return Padding(
       padding: const EdgeInsets.all(20),
       child: Column(
@@ -249,7 +244,7 @@ class _TicketsPageState extends State<TicketsPage> {
                   ),
                   const SizedBox(width: 8),
                   Text(
-                    ticket['date'] as String,
+                    ticket.date,
                     style: const TextStyle(fontSize: 12, color: _textGray),
                   ),
                 ],
@@ -263,7 +258,7 @@ class _TicketsPageState extends State<TicketsPage> {
                   ),
                   const SizedBox(width: 8),
                   Text(
-                    ticket['time'] as String,
+                    ticket.time,
                     style: const TextStyle(fontSize: 12, color: _textGray),
                   ),
                 ],
@@ -292,7 +287,7 @@ class _TicketsPageState extends State<TicketsPage> {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  ticket['ticketNumber'] as String,
+                  ticket.ticketNumber,
                   style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
@@ -307,11 +302,11 @@ class _TicketsPageState extends State<TicketsPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
+              const Row(
                 children: [
-                  const Icon(Icons.qr_code, size: 18, color: _textDark),
-                  const SizedBox(width: 8),
-                  const Text(
+                  Icon(Icons.qr_code, size: 18, color: _textDark),
+                  SizedBox(width: 8),
+                  Text(
                     'View QR',
                     style: TextStyle(
                       fontSize: 14,

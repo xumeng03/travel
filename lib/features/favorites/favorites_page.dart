@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:travel/common/models/FavoriteData.dart';
 
 const _textDark = Color(0xFF232323);
 const _textGray = Color(0xFF606060);
@@ -14,28 +15,29 @@ class FavoritesPage extends StatefulWidget {
 }
 
 class _FavoritesPageState extends State<FavoritesPage> {
-  final _favorites = <Map<String, Object>>[
-    {
-      'imageUrl': 'assets/images/explore_aspen.png',
-      'title': 'Coeurdes Alpes',
-      'location': 'Aspen, USA',
-      'rating': 4.5,
-      'price': '\$199',
-    },
-    {
-      'imageUrl': 'assets/images/alley_palace.png',
-      'title': 'Alley Palace',
-      'location': 'Aspen, USA',
-      'rating': 4.1,
-      'price': '\$149',
-    },
-    {
-      'imageUrl': 'assets/images/alley_palace.png',
-      'title': 'Alley Palace',
-      'location': 'Aspen, USA',
-      'rating': 4.1,
-      'price': '\$149',
-    },
+  /// 收藏列表（实际项目中数据来自 API）
+  final List<FavoriteData> _favorites = [
+    const FavoriteData(
+      imageUrl: 'assets/images/explore_aspen.png',
+      title: 'Coeurdes Alpes',
+      location: 'Aspen, USA',
+      rating: 4.5,
+      price: 199.0,
+    ),
+    const FavoriteData(
+      imageUrl: 'assets/images/alley_palace.png',
+      title: 'Alley Palace',
+      location: 'Aspen, USA',
+      rating: 4.1,
+      price: 149.0,
+    ),
+    const FavoriteData(
+      imageUrl: 'assets/images/alley_palace.png',
+      title: 'Alley Palace',
+      location: 'Aspen, USA',
+      rating: 4.1,
+      price: 149.0,
+    ),
   ];
 
   @override
@@ -49,19 +51,11 @@ class _FavoritesPageState extends State<FavoritesPage> {
           children: [
             _buildHeader(),
             const SizedBox(height: 32),
-            ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              scrollDirection: Axis.vertical,
-              itemCount: _favorites.length,
-              itemBuilder: (context, index) {
-                final favorite = _favorites[index];
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 16),
-                  child: _buildCard(favorite),
-                );
-              },
-            ),
+            for (final favorite in _favorites)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 16),
+                child: _buildCard(favorite),
+              ),
           ],
         ),
       ),
@@ -109,7 +103,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
 
   /// 构建收藏卡片
   /// 白色圆角卡片，蓝色阴影，由图片区和详情区两部分组成
-  Widget _buildCard(Map<String, Object> item) {
+  Widget _buildCard(FavoriteData favorite) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -123,14 +117,15 @@ class _FavoritesPageState extends State<FavoritesPage> {
         ],
       ),
       clipBehavior: Clip.hardEdge,
-      child: Column(children: [_buildCardImage(item), _buildCardBody(item)]),
+      child: Column(
+        children: [_buildCardImage(favorite), _buildCardBody(favorite)],
+      ),
     );
   }
 
   /// 构建卡片图片区域
   /// 高度 192px，底部渐变遮罩，右上角显示白色胶囊评分徽标
-  Widget _buildCardImage(Map<String, Object> item) {
-    final rating = item['rating'] as double;
+  Widget _buildCardImage(FavoriteData favorite) {
     return SizedBox(
       height: 192,
       width: double.infinity,
@@ -138,7 +133,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
         children: [
           // 背景图
           Positioned.fill(
-            child: Image.asset(item['imageUrl'] as String, fit: BoxFit.cover),
+            child: Image.asset(favorite.imageUrl, fit: BoxFit.cover),
           ),
           // 右上角评分徽标
           Positioned(
@@ -160,7 +155,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                   ),
                   const SizedBox(width: 4),
                   Text(
-                    rating.toString(),
+                    favorite.rating.toString(),
                     style: const TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
@@ -178,7 +173,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
 
   /// 构建卡片详情区域
   /// 包含景点名称、地址，以及底部分隔线后的起始价格和移除按钮
-  Widget _buildCardBody(Map<String, Object> item) {
+  Widget _buildCardBody(FavoriteData favorite) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
       child: Column(
@@ -188,7 +183,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                item['title'] as String,
+                favorite.title,
                 style: const TextStyle(
                   fontFamily: 'Montserrat',
                   fontSize: 16,
@@ -206,11 +201,8 @@ class _FavoritesPageState extends State<FavoritesPage> {
                   ),
                   const SizedBox(width: 4),
                   Text(
-                    item['location'] as String,
-                    style: const TextStyle(
-                      fontSize: 12,
-                      color: _textGray,
-                    ),
+                    favorite.location,
+                    style: const TextStyle(fontSize: 12, color: _textGray),
                   ),
                 ],
               ),
@@ -226,7 +218,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // 价格
+                // 价格（double 格式化为 $xxx 字符串展示）
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -236,7 +228,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      item['price'] as String,
+                      '\$${favorite.price.toStringAsFixed(0)}',
                       style: const TextStyle(
                         fontFamily: 'Montserrat',
                         fontSize: 18,
@@ -248,21 +240,10 @@ class _FavoritesPageState extends State<FavoritesPage> {
                 ),
                 // 删除按钮
                 GestureDetector(
-                  onTap: () {},
-                  child: const Row(
-                    children: [
-                      Icon(Icons.delete_outline, size: 18, color: _red),
-                      SizedBox(width: 6),
-                      Text(
-                        'Remove',
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                          color: _red,
-                        ),
-                      ),
-                    ],
-                  ),
+                  onTap: () {
+                    print("TODO: 调用 API 取消收藏");
+                  },
+                  child: Icon(Icons.favorite, size: 28, color: _red),
                 ),
               ],
             ),

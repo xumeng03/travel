@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:travel/common/models/ProfileMenuData.dart';
 
 const _blue = Color(0xFF176FF2);
 const _textDark = Color(0xFF232323);
@@ -12,13 +13,13 @@ const _red = Color(0xFFEC5655);
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
-  /// 菜单项数据：图标、标签、图标背景色、跳转路由名（null 表示暂未实现）
-  static const _menuItems = [
-    (Icons.person_outline,       'Personal Info',     _blue,     'personal_info'),
-    (Icons.notifications_outlined,'Notifications',    _orange,   null),
-    (Icons.lock_outline,         'Privacy & Security',_blue,     null),
-    (Icons.settings_outlined,    'App Settings',      _textGray, null),
-    (Icons.help_outline,         'Help & Support',    _red,      null),
+  /// 菜单项数据列表
+  static const _profileMenuData = [
+    ProfileMenuData(icon: Icons.person_outline,        label: 'Personal Info',      color: _blue,     routeName: 'personal_info'),
+    ProfileMenuData(icon: Icons.notifications_outlined,label: 'Notifications',      color: _orange,   routeName: 'notifications'),
+    ProfileMenuData(icon: Icons.lock_outline,          label: 'Privacy & Security', color: _blue,     routeName: 'privacy_security'),
+    ProfileMenuData(icon: Icons.settings_outlined,     label: 'App Settings',       color: _textGray, routeName: 'app_settings'),
+    ProfileMenuData(icon: Icons.help_outline,          label: 'Help & Support',     color: _red,      routeName: 'help_support'),
   ];
 
   @override
@@ -375,16 +376,10 @@ class ProfilePage extends StatelessWidget {
   Widget _buildMenuList(BuildContext context) {
     return Column(
       children: [
-        for (final (icon, label, color, routeName) in _menuItems)
+        for (final menu in _profileMenuData)
           Padding(
             padding: const EdgeInsets.only(bottom: 8),
-            child: _buildMenuItem(
-              context,
-              icon: icon,
-              label: label,
-              color: color,
-              routeName: routeName,
-            ),
+            child: _buildMenu(context, menu),
           ),
       ],
     );
@@ -392,15 +387,9 @@ class ProfilePage extends StatelessWidget {
 
   /// 构建单个菜单项
   /// 左侧彩色图标 + 标签文字，右侧箭头；routeName 不为 null 时可点击跳转
-  Widget _buildMenuItem(
-    BuildContext context, {
-    required IconData icon,
-    required String label,
-    required Color color,
-    required String? routeName,
-  }) {
+  Widget _buildMenu(BuildContext context, ProfileMenuData menu) {
     return GestureDetector(
-      onTap: routeName != null ? () => context.pushNamed(routeName) : null,
+      onTap: menu.routeName != null ? () => context.pushNamed(menu.routeName!) : null,
       child: Container(
         height: 88,
         padding: const EdgeInsets.all(20),
@@ -422,16 +411,16 @@ class ProfilePage extends StatelessWidget {
               width: 48,
               height: 48,
               decoration: BoxDecoration(
-                color: color.withValues(alpha: 0.10),
+                color: menu.color.withValues(alpha: 0.10),
                 borderRadius: BorderRadius.circular(16),
               ),
-              child: Icon(icon, size: 22, color: color),
+              child: Icon(menu.icon, size: 22, color: menu.color),
             ),
             const SizedBox(width: 16),
             // 标签
             Expanded(
               child: Text(
-                label,
+                menu.label,
                 style: const TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.bold,

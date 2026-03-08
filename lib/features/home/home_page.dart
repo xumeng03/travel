@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:travel/common/models/RecommendData.dart';
+
+import '../../common/models/PopularData.dart';
 
 const _blue = Color(0xFF176FF2);
 const _darkGreen = Color(0xFF3A544F);
@@ -17,26 +20,84 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  /// 当前选中的分类标签下标，默认选中第一项
   int _selectedCategory = 0;
 
+  /// 分类标签列表
   final _categories = ['Location', 'Hotels', 'Food', 'Adventure'];
 
-  final _recommendedCards = [
-    {'imageUrl': 'assets/images/explore_aspen.png', 'title': 'Explore Aspen'},
-    {
-      'imageUrl': 'assets/images/luxurious_aspen.jpg',
-      'title': 'Luxurious Aspen',
-    },
-    {'imageUrl': 'assets/images/explore_aspen.png', 'title': 'Explore Aspen'},
-    {
-      'imageUrl': 'assets/images/luxurious_aspen.jpg',
-      'title': 'Luxurious Aspen',
-    },
-    {'imageUrl': 'assets/images/explore_aspen.png', 'title': 'Explore Aspen'},
-    {
-      'imageUrl': 'assets/images/luxurious_aspen.jpg',
-      'title': 'Luxurious Aspen',
-    },
+  /// 热门景点数据列表（实际项目中数据来自 API）
+  final _popularData = [
+    PopularData(
+      title: 'Alley Palace',
+      imageUrl: 'assets/images/alley_palace.png',
+      star: 4.1,
+      isFavorite: true,
+    ),
+    PopularData(
+      title: 'Alley Palace',
+      imageUrl: 'assets/images/alley_palace.png',
+      star: 4.1,
+      isFavorite: false,
+    ),
+    PopularData(
+      title: 'Alley Palace',
+      imageUrl: 'assets/images/alley_palace.png',
+      star: 4.1,
+      isFavorite: true,
+    ),
+    PopularData(
+      title: 'Alley Palace',
+      imageUrl: 'assets/images/alley_palace.png',
+      star: 4.1,
+      isFavorite: true,
+    ),
+    PopularData(
+      title: 'Alley Palace',
+      imageUrl: 'assets/images/alley_palace.png',
+      star: 4.1,
+      isFavorite: true,
+    ),
+  ];
+
+  /// 推荐行程数据列表（实际项目中数据来自 API）
+  final _recommendData = [
+    RecommendData(
+      title: 'Explore Aspen',
+      subTitle: 'Reloaded 1 of 847 libraries in 294ms',
+      imageUrl: 'assets/images/explore_aspen.png',
+      duration: '4N/5D',
+    ),
+    RecommendData(
+      title: 'Luxurious Aspen',
+      subTitle: 'Reloaded 1 of 847 libraries in 294ms',
+      imageUrl: 'assets/images/luxurious_aspen.jpg',
+      duration: '4N/5D',
+    ),
+    RecommendData(
+      title: 'Explore Aspen',
+      subTitle: 'Reloaded 1 of 847 libraries in 294ms',
+      imageUrl: 'assets/images/explore_aspen.png',
+      duration: '4N/5D',
+    ),
+    RecommendData(
+      title: 'Luxurious Aspen',
+      subTitle: 'Reloaded 1 of 847 libraries in 294ms',
+      imageUrl: 'assets/images/luxurious_aspen.jpg',
+      duration: '4N/5D',
+    ),
+    RecommendData(
+      title: 'Explore Aspen',
+      subTitle: 'Reloaded 1 of 847 libraries in 294ms',
+      imageUrl: 'assets/images/explore_aspen.png',
+      duration: '4N/5D',
+    ),
+    RecommendData(
+      title: 'Luxurious Aspen',
+      subTitle: 'Reloaded 1 of 847 libraries in 294ms',
+      imageUrl: 'assets/images/luxurious_aspen.jpg',
+      duration: '4N/5D',
+    ),
   ];
 
   @override
@@ -54,7 +115,7 @@ class _HomePageState extends State<HomePage> {
           const SizedBox(height: 24),
           _buildPopular(),
           const SizedBox(height: 24),
-          _buildRecommended(),
+          _buildRecommend(),
           const SizedBox(height: 16),
         ],
       ),
@@ -238,129 +299,7 @@ class _HomePageState extends State<HomePage> {
             itemCount: 5,
             separatorBuilder: (_, _) => const SizedBox(width: 20),
             itemBuilder: (context, index) {
-              return GestureDetector(
-                onTap: () {
-                  context.pushNamed('scenic_spot');
-                },
-                child: ClipRRect(
-                  // 圆角裁剪整个卡片，所有子组件在圆角范围内渲染，超出部分直接丢弃
-                  borderRadius: BorderRadius.circular(24),
-                  child: Stack(
-                    children: [
-                      // 背景图片，加载失败时显示纯色兜底
-                      SizedBox(
-                        width: 188,
-                        height: 240,
-                        // 本地图片
-                        child: Image.asset(
-                          'assets/images/alley_palace.png',
-                          fit: BoxFit.cover,
-                        ),
-                        // 网络图片
-                        // child: Image.network(
-                        //   _imgPopular,
-                        //   fit: BoxFit.cover,
-                        //   errorBuilder: (_, _, _) =>
-                        //       Container(color: const Color(0xFF2A5A52)),
-                        // ),
-                      ),
-                      // 从透明到深绿的渐变蒙层，使底部文字更易阅读
-                      Positioned.fill(
-                        // DecoratedBox 负责绘制装饰背景的轻量组件
-                        child: DecoratedBox(
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: [
-                                Colors.transparent,
-                                Color(0xFF2A5A52).withValues(alpha: 0.85),
-                              ],
-                              // 60% 以上透明，60%~100% 渐变为深色
-                              stops: const [0.6, 1.0],
-                            ),
-                          ),
-                        ),
-                      ),
-                      // 右下角收藏按钮（圆形背景 + 红心图标）
-                      Positioned(
-                        bottom: 16,
-                        right: 12,
-                        child: Container(
-                          width: 32,
-                          height: 32,
-                          decoration: const BoxDecoration(
-                            color: _searchBg,
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Icon(
-                            Icons.favorite,
-                            color: Colors.red,
-                            size: 16,
-                          ),
-                        ),
-                      ),
-                      // 左下角信息区：景点名称标签 + 评分标签
-                      Positioned(
-                        bottom: 16,
-                        left: 12,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // 景点名称胶囊标签
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 4,
-                              ),
-                              decoration: BoxDecoration(
-                                color: _cardGreen,
-                                borderRadius: BorderRadius.circular(60),
-                              ),
-                              child: const Text(
-                                'Alley Palace',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 6),
-                            // 评分胶囊标签（星形图标 + 分值）
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 4,
-                              ),
-                              decoration: BoxDecoration(
-                                color: _cardGreen,
-                                borderRadius: BorderRadius.circular(60),
-                              ),
-                              child: const Row(
-                                children: [
-                                  Icon(
-                                    Icons.star,
-                                    color: Colors.amber,
-                                    size: 14,
-                                  ),
-                                  SizedBox(width: 4),
-                                  Text(
-                                    '4.1',
-                                    style: TextStyle(
-                                      fontSize: 10,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              );
+              return _buildPopularCard(_popularData[index]);
             },
           ),
         ),
@@ -368,9 +307,123 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  /// 构建单张热门景点卡片
+  /// 结构：背景图 → 渐变蒙层（上透明下深绿）→ 左下角名称+评分标签 → 右下角收藏按钮
+  Widget _buildPopularCard(PopularData data) {
+    return GestureDetector(
+      onTap: () {
+        context.pushNamed('scenic_spot');
+      },
+      child: ClipRRect(
+        // 圆角裁剪整个卡片，所有子组件在圆角范围内渲染，超出部分直接丢弃
+        borderRadius: BorderRadius.circular(24),
+        child: Stack(
+          children: [
+            // 背景图片，加载失败时显示纯色兜底
+            SizedBox(
+              width: 188,
+              height: 240,
+              // 本地图片
+              child: Image.asset(data.imageUrl, fit: BoxFit.cover),
+              // 网络图片
+              // child: Image.network(
+              //   _imgPopular,
+              //   fit: BoxFit.cover,
+              //   errorBuilder: (_, _, _) =>
+              //       Container(color: const Color(0xFF2A5A52)),
+              // ),
+            ),
+            // 从透明到深绿的渐变蒙层，使底部文字更易阅读
+            Positioned.fill(
+              // DecoratedBox 负责绘制装饰背景的轻量组件
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Colors.transparent,
+                      Color(0xFF2A5A52).withValues(alpha: 0.85),
+                    ],
+                    // 60% 以上透明，60%~100% 渐变为深色
+                    stops: const [0.6, 1.0],
+                  ),
+                ),
+              ),
+            ),
+            // 右下角收藏按钮（圆形背景 + 红心图标）
+            Positioned(
+              bottom: 16,
+              right: 12,
+              child: Container(
+                width: 32,
+                height: 32,
+                decoration: const BoxDecoration(
+                  color: _searchBg,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  data.isFavorite ? Icons.favorite : Icons.favorite_border,
+                  color: data.isFavorite ? Colors.red : Colors.black,
+                  size: 16,
+                ),
+              ),
+            ),
+            // 左下角信息区：景点名称标签 + 评分标签
+            Positioned(
+              bottom: 16,
+              left: 12,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // 景点名称胶囊标签
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 4,
+                    ),
+                    decoration: BoxDecoration(
+                      color: _cardGreen,
+                      borderRadius: BorderRadius.circular(60),
+                    ),
+                    child: Text(
+                      data.title,
+                      style: const TextStyle(fontSize: 12, color: Colors.white),
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  // 评分胶囊标签（星形图标 + 分值）
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 4,
+                    ),
+                    decoration: BoxDecoration(
+                      color: _cardGreen,
+                      borderRadius: BorderRadius.circular(60),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(Icons.star, color: Colors.amber, size: 14),
+                        SizedBox(width: 4),
+                        Text(
+                          data.star.toString(),
+                          style: TextStyle(fontSize: 10, color: Colors.white),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   /// 构建推荐卡片网格（2列）
-  ///
-  Widget _buildRecommended() {
+  Widget _buildRecommend() {
     return Column(
       children: [
         _buildSection('Recommended', null),
@@ -390,15 +443,11 @@ class _HomePageState extends State<HomePage> {
               // 子项宽高比
               childAspectRatio: 1,
             ),
-            itemCount: _recommendedCards.length,
+            itemCount: _recommendData.length,
             itemBuilder: (context, index) {
               // 从数据列表中取出当前卡片数据
-              final card = _recommendedCards[index];
-              return _buildRecommendCard(
-                imageUrl: card['imageUrl']!,
-                title: card['title']!,
-                duration: '4N/5D',
-              );
+              final data = _recommendData[index];
+              return _buildRecommendCard(data);
             },
           ),
         ),
@@ -408,11 +457,7 @@ class _HomePageState extends State<HomePage> {
 
   /// 构建单张推荐卡片
   /// 结构：白色渐变卡片背景 → 上方图片区（含时长标签）→ 下方文字区（标题 + Hot Deal）
-  Widget _buildRecommendCard({
-    required String imageUrl,
-    required String title,
-    required String duration,
-  }) {
+  Widget _buildRecommendCard(RecommendData data) {
     return GestureDetector(
       onTap: () {
         context.pushNamed('scenic_spot');
@@ -451,7 +496,7 @@ class _HomePageState extends State<HomePage> {
                     width: double.infinity,
                     height: 96,
                     // 本地图片
-                    child: Image.asset(imageUrl, fit: BoxFit.cover),
+                    child: Image.asset(data.imageUrl, fit: BoxFit.cover),
                     // 网络图片
                     // child: Image.network(
                     //   imageUrl,
@@ -475,7 +520,7 @@ class _HomePageState extends State<HomePage> {
                       border: Border.all(color: Colors.white, width: 2),
                     ),
                     child: Text(
-                      duration,
+                      data.duration,
                       style: const TextStyle(
                         fontFamily: 'Montserrat',
                         fontSize: 10,
@@ -496,7 +541,7 @@ class _HomePageState extends State<HomePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    title,
+                    data.title,
                     style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
@@ -504,7 +549,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   Text(
-                    'Reloaded 1 of 847 libraries in 294ms',
+                    data.subTitle,
                     style: const TextStyle(fontSize: 12, color: _textGray),
                   ),
                 ],

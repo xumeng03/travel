@@ -6,7 +6,11 @@ import 'package:travel/features/splash/splash_page.dart';
 import '../features/error/not_found_page.dart';
 import '../features/favorites/favorites_page.dart';
 import '../features/home/home_page.dart';
+import '../features/profile/app_settings_page.dart';
+import '../features/profile/help_support_page.dart';
+import '../features/profile/notifications_page.dart';
 import '../features/profile/personal_info_page.dart';
+import '../features/profile/privacy_security_page.dart';
 import '../features/profile/profile_page.dart';
 import '../features/tickets/tickets_page.dart';
 
@@ -47,6 +51,26 @@ final router = GoRouter(
           path: '/personal_info',
           name: "personal_info",
           builder: (context, state) => const PersonalInfoPage(),
+        ),
+        GoRoute(
+          path: '/notifications',
+          name: "notifications",
+          builder: (context, state) => const NotificationsPage(),
+        ),
+        GoRoute(
+          path: '/privacy_security',
+          name: "privacy_security",
+          builder: (context, state) => const PrivacySecurityPage(),
+        ),
+        GoRoute(
+          path: '/app_settings',
+          name: "app_settings",
+          builder: (context, state) => const AppSettingsPage(),
+        ),
+        GoRoute(
+          path: '/help_support',
+          name: "help_support",
+          builder: (context, state) => const HelpSupportPage(),
         ),
       ],
     ),

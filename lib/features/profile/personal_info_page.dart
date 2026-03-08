@@ -36,7 +36,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
     return SingleChildScrollView(
       padding: const EdgeInsets.only(bottom: 100),
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
+        padding: const EdgeInsets.fromLTRB(20, 24, 20, 0),
         child: Column(
           children: [
             _buildHeader(context),
@@ -59,8 +59,8 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
         GestureDetector(
           onTap: () => context.pop(),
           child: Container(
-            width: 48,
-            height: 48,
+            width: 40,
+            height: 40,
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(12),
