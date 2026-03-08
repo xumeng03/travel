@@ -18,7 +18,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedCategory = 0;
-  int _selectedNav = 0;
 
   final _categories = ['Location', 'Hotels', 'Food', 'Adventure'];
 
@@ -42,32 +41,22 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Stack(
-          children: [
-            SingleChildScrollView(
-              padding: const EdgeInsets.only(bottom: 100),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildHeader(),
-                  const SizedBox(height: 20),
-                  _buildSearchBar(),
-                  const SizedBox(height: 20),
-                  _buildCategories(),
-                  const SizedBox(height: 24),
-                  _buildPopular(),
-                  const SizedBox(height: 24),
-                  _buildRecommended(),
-                  const SizedBox(height: 16),
-                ],
-              ),
-            ),
-            Align(alignment: Alignment.bottomCenter, child: _buildBottomNav()),
-          ],
-        ),
+    return SingleChildScrollView(
+      padding: const EdgeInsets.only(bottom: 100),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildHeader(),
+          const SizedBox(height: 20),
+          _buildSearchBar(),
+          const SizedBox(height: 20),
+          _buildCategories(),
+          const SizedBox(height: 24),
+          _buildPopular(),
+          const SizedBox(height: 24),
+          _buildRecommended(),
+          const SizedBox(height: 16),
+        ],
       ),
     );
   }
@@ -106,7 +95,7 @@ class _HomePageState extends State<HomePage> {
           // 右侧：位置选择器（收藏图标 + 地名 + 下拉箭头）
           Row(
             children: [
-              const Icon(Icons.favorite_border, size: 16),
+              const Icon(Icons.location_on_outlined, size: 16, color: _blue),
               const SizedBox(width: 4),
               const Text(
                 'Aspen, USA',
@@ -522,68 +511,6 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-
-  /// 构建底部导航栏
-  /// 固定在页面底部，包含四个导航项：首页、票务、收藏、个人
-  Widget _buildBottomNav() {
-    return Container(
-      height: 80,
-      decoration: BoxDecoration(
-        // 白色到浅灰的渐变背景
-        gradient: const LinearGradient(
-          colors: [Color(0xFFFEFEFE), Color(0xFFF5F5F5)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        // 仅顶部两角圆角，与页面内容形成分隔
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
-        // 顶部蓝色微投影，增强悬浮感
-        boxShadow: [
-          BoxShadow(
-            color: const Color(0xFF186FF2).withValues(alpha: 0.05),
-            blurRadius: 22,
-            offset: const Offset(15, -19),
-          ),
-        ],
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          _navItem(Icons.home_rounded, 0), // 首页
-          _navItem(Icons.confirmation_number_outlined, 1), // 票务
-          _navItem(Icons.favorite_border, 2), // 收藏
-          _navItem(Icons.person_outline, 3), // 个人
-        ],
-      ),
-    );
-  }
-
-  /// 构建单个导航项
-  /// 选中时显示蓝色圆角背景 + 白色图标，未选中时显示灰色图标
-  Widget _navItem(IconData icon, int index) {
-    // 当前项是否为选中状态
-    final selected = index == _selectedNav;
-    return GestureDetector(
-      onTap: () => setState(() => _selectedNav = index),
-      child: Container(
-        width: 48,
-        height: 48,
-        // 选中：蓝色圆角背景；未选中：无背景
-        decoration: selected
-            ? BoxDecoration(
-                color: _blue,
-                borderRadius: BorderRadius.circular(16),
-              )
-            : null,
-        child: Icon(
-          icon,
-          // 选中：白色图标；未选中：灰色图标
-          color: selected ? Colors.white : _textLight,
-          size: 24,
         ),
       ),
     );

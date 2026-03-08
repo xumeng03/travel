@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
-import 'app.dart';
+import 'package:travel/routes/router.dart';
 
 void main() {
-  runApp(const App());
+  runApp(
+    MaterialApp.router(
+      title: 'Travel',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+      ),
+      routerConfig: router,
+    ),
+  );
 }
