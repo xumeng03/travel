@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:travel/features/booking/booking_confirm_page.dart';
 import 'package:travel/features/scenic_spot/scenic_spot_page.dart';
 import 'package:travel/features/shell/bottom_nav.dart';
 import 'package:travel/features/splash/splash_page.dart';
@@ -73,6 +74,11 @@ final router = GoRouter(
           builder: (context, state) => const HelpSupportPage(),
         ),
       ],
+    ),
+    GoRoute(
+      path: '/booking_confirm',
+      name: "booking_confirm",
+      builder: (context, state) => const BookingConfirmPage(),
     ),
     GoRoute(
       path: '/scenic_spot',

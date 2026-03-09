@@ -57,7 +57,7 @@ class _ScenicSpotPageState extends State<ScenicSpotPage> {
               ),
             ),
             // 底部预订栏（固定）
-            Positioned(left: 0, right: 0, bottom: 0, child: _buildBookingBar()),
+            Positioned(left: 0, right: 0, bottom: 0, child: _buildBooking(context)),
           ],
         ),
       ),
@@ -291,7 +291,7 @@ class _ScenicSpotPageState extends State<ScenicSpotPage> {
 
   /// 构建底部预订栏
   /// 左侧价格，右侧 Book Now 按钮
-  Widget _buildBookingBar() {
+  Widget _buildBooking(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
       decoration: const BoxDecoration(
@@ -336,19 +336,24 @@ class _ScenicSpotPageState extends State<ScenicSpotPage> {
                   ),
                 ],
               ),
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    'Book Now',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                  GestureDetector(
+                    onTap: () {
+                      context.pushNamed('booking_confirm');
+                    },
+                    child: const Text(
+                      'Book Now',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
-                  SizedBox(width: 8),
-                  Icon(Icons.arrow_forward, color: Colors.white, size: 20),
+                  const SizedBox(width: 8),
+                  const Icon(Icons.arrow_forward, color: Colors.white, size: 20),
                 ],
               ),
             ),
