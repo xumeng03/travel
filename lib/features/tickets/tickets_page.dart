@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../common/models/TicketData.dart';
 
@@ -61,7 +62,7 @@ class _TicketsPageState extends State<TicketsPage> {
             for (final ticket in _tickets)
               Padding(
                 padding: const EdgeInsets.only(bottom: 16),
-                child: _buildTicketCard(ticket),
+                child: _buildTicketCard(context, ticket),
               ),
           ],
         ),
@@ -114,7 +115,7 @@ class _TicketsPageState extends State<TicketsPage> {
 
   /// 构建票务卡片
   /// 白色圆角卡片，蓝色阴影，由图片区和详情区两部分组成
-  Widget _buildTicketCard(TicketData ticket) {
+  Widget _buildTicketCard(BuildContext context, TicketData ticket) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -128,8 +129,13 @@ class _TicketsPageState extends State<TicketsPage> {
         ],
       ),
       clipBehavior: Clip.hardEdge,
-      child: Column(
-        children: [_buildCardImage(ticket), _buildCardDetail(ticket)],
+      child: GestureDetector(
+        onTap: () {
+          context.pushNamed('ticket_detail');
+        },
+        child: Column(
+          children: [_buildCardImage(ticket), _buildCardDetail(ticket)],
+        ),
       ),
     );
   }

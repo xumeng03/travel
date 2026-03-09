@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:travel/common/models/FavoriteData.dart';
 
 const _textDark = Color(0xFF232323);
@@ -52,9 +53,14 @@ class _FavoritesPageState extends State<FavoritesPage> {
             _buildHeader(),
             const SizedBox(height: 32),
             for (final favorite in _favorites)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 16),
-                child: _buildCard(favorite),
+              GestureDetector(
+                onTap: (){
+                  context.pushNamed('scenic_spot');
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 16),
+                  child: _buildCard(favorite),
+                ),
               ),
           ],
         ),
