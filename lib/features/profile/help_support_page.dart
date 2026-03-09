@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:travel/common/models/contact_item.dart';
-import 'package:travel/common/models/faq_item.dart';
+import 'package:travel/common/models/ContactMenuData.dart';
+import 'package:travel/common/models/FaqMenuData.dart';
 
 const _blue = Color(0xFF176FF2);
 const _textDark = Color(0xFF232323);
@@ -12,17 +12,17 @@ class HelpSupportPage extends StatelessWidget {
 
   /// 联系方式列表
   static const _contactItems = [
-    ContactItem(
+    ContactMenuData(
       icon: Icons.chat_bubble_outline,
       title: 'Live Chat',
       subtitle: 'Chat with our support team',
     ),
-    ContactItem(
+    ContactMenuData(
       icon: Icons.mail_outline,
       title: 'Email Support',
       subtitle: 'support@aspen.com',
     ),
-    ContactItem(
+    ContactMenuData(
       icon: Icons.phone_outlined,
       title: 'Phone Support',
       subtitle: '+1 (800) 123-4567',
@@ -31,14 +31,14 @@ class HelpSupportPage extends StatelessWidget {
 
   /// FAQ 问题列表
   static const _faqItems = [
-    FaqItem(question: 'How do I book a trip?', category: 'Booking'),
-    FaqItem(question: 'Can I cancel my reservation?', category: 'Cancellation'),
-    FaqItem(
+    FaqMenuData(question: 'How do I book a trip?', category: 'Booking'),
+    FaqMenuData(question: 'Can I cancel my reservation?', category: 'Cancellation'),
+    FaqMenuData(
       question: 'What payment methods are accepted?',
       category: 'Payment',
     ),
-    FaqItem(question: 'How do I change my booking?', category: 'Booking'),
-    FaqItem(question: 'What is the refund policy?', category: 'Refund'),
+    FaqMenuData(question: 'How do I change my booking?', category: 'Booking'),
+    FaqMenuData(question: 'What is the refund policy?', category: 'Refund'),
   ];
 
   @override
@@ -122,14 +122,14 @@ class HelpSupportPage extends StatelessWidget {
         for (final item in _contactItems)
           Padding(
             padding: const EdgeInsets.only(bottom: 12),
-            child: _buildContactItem(item),
+            child: _buildContactMenuData(item),
           ),
       ],
     );
   }
 
   /// 构建单个联系方式项（白色圆角卡片）
-  Widget _buildContactItem(ContactItem item) {
+  Widget _buildContactMenuData(ContactMenuData item) {
     return Container(
       height: 76,
       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -183,7 +183,7 @@ class HelpSupportPage extends StatelessWidget {
         for (final item in _faqItems)
           Padding(
             padding: const EdgeInsets.only(bottom: 12),
-            child: _buildFaqItem(item),
+            child: _buildFaqMenuData(item),
           ),
       ],
     );
@@ -191,7 +191,7 @@ class HelpSupportPage extends StatelessWidget {
 
   /// 构建单个 FAQ 项（白色圆角卡片）
   /// 左侧蓝色 5% 图标盒（FileText 样式）+ 问题标题/分类标签 + 右箭头
-  Widget _buildFaqItem(FaqItem item) {
+  Widget _buildFaqMenuData(FaqMenuData item) {
     return Container(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
       decoration: BoxDecoration(

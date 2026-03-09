@@ -118,7 +118,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
       ),
       clipBehavior: Clip.hardEdge,
       child: Column(
-        children: [_buildCardImage(favorite), _buildCardBody(favorite)],
+        children: [_buildCardImage(favorite), _buildCardDetail(favorite)],
       ),
     );
   }
@@ -173,7 +173,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
 
   /// 构建卡片详情区域
   /// 包含景点名称、地址，以及底部分隔线后的起始价格和移除按钮
-  Widget _buildCardBody(FavoriteData favorite) {
+  Widget _buildCardDetail(FavoriteData favorite) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
       child: Column(

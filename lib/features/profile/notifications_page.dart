@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:travel/common/models/NotificationMenuData.dart';
+import 'package:travel/common/models/ToggleData.dart';
 import 'package:travel/common/widgets/Toggle.dart';
-
-import '../../common/models/ToggleData.dart';
 
 const _textDark = Color(0xFF232323);
 const _textGray = Color(0xFF606060);
@@ -16,31 +16,31 @@ class NotificationsPage extends StatefulWidget {
 
 class _NotificationsPageState extends State<NotificationsPage> {
   /// 通知开关列表（实际项目中数据来自 API）
-  final List<ToggleData> _items = [
-    ToggleData(
+  final List<NotificationMenuData> _items = [
+    NotificationMenuData(
       title: 'Push Notifications',
       subtitle: 'Receive push notifications',
-      isOn: true,
+      toggleData: ToggleData(isOn: true),
     ),
-    ToggleData(
+    NotificationMenuData(
       title: 'Promotions & Offers',
       subtitle: 'Get special offers and deals',
-      isOn: false,
+      toggleData: ToggleData(isOn: false),
     ),
-    ToggleData(
+    NotificationMenuData(
       title: 'Booking Updates',
       subtitle: 'Updates about your bookings',
-      isOn: true,
+      toggleData: ToggleData(isOn: true),
     ),
-    ToggleData(
+    NotificationMenuData(
       title: 'Favorite Updates',
       subtitle: 'Price drops on favorites',
-      isOn: true,
+      toggleData: ToggleData(isOn: true),
     ),
-    ToggleData(
+    NotificationMenuData(
       title: 'Newsletter',
       subtitle: 'Travel tips and guides',
-      isOn: false,
+      toggleData: ToggleData(isOn: false),
     ),
   ];
 
@@ -111,7 +111,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
 
   /// 构建单个通知开关项
   /// 白色圆角卡片，左侧标题+副标题，右侧自定义 Toggle
-  Widget _buildItem(ToggleData item) {
+  Widget _buildItem(NotificationMenuData item) {
     return Container(
       height: 75,
       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -151,7 +151,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
             ),
           ),
           // 自定义 Toggle
-          Toggle(toggleData: item),
+          Toggle(toggleData: item.toggleData),
         ],
       ),
     );

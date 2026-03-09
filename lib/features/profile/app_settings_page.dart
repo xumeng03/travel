@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../common/models/ToggleData.dart';
+import '../../common/models/SettingsMenuData.dart';
 import '../../common/widgets/Toggle.dart';
 
 const _blue = Color(0xFF176FF2);
@@ -25,18 +26,18 @@ class _AppSettingsPageState extends State<AppSettingsPage> {
   String _selectedLanguage = 'English';
 
   /// 开关项数据：图标、标题、副标题
-  final List<ToggleData> _toggleItems = [
-    ToggleData(
+  final List<SettingsMenuData> _toggleItems = [
+    SettingsMenuData(
       icon: Icons.dark_mode_outlined,
       title: 'Dark Mode',
       subtitle: 'Switch to dark theme',
-      isOn: false,
+      toggleData: ToggleData(isOn: false),
     ),
-    ToggleData(
+    SettingsMenuData(
       icon: Icons.download_outlined,
       title: 'Offline Mode',
       subtitle: 'Download maps and content',
-      isOn: false,
+      toggleData: ToggleData(isOn: false),
     ),
   ];
 
@@ -198,7 +199,7 @@ class _AppSettingsPageState extends State<AppSettingsPage> {
 
   /// 构建单个开关项（Dark Mode / Offline Mode）
   /// 白色圆角卡片，左侧蓝色图标盒 + 标题/副标题，右侧自定义 Toggle
-  Widget _buildToggleItem(ToggleData item) {
+  Widget _buildToggleItem(SettingsMenuData item) {
     return Container(
       height: 75,
       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -224,7 +225,7 @@ class _AppSettingsPageState extends State<AppSettingsPage> {
               ),
               borderRadius: BorderRadius.circular(12),
             ),
-            child: Icon(item.icon!, size: 20, color: _blue),
+            child: Icon(item.icon, size: 20, color: _blue),
           ),
           const SizedBox(width: 16),
           Expanded(
@@ -248,7 +249,7 @@ class _AppSettingsPageState extends State<AppSettingsPage> {
               ],
             ),
           ),
-          Toggle(toggleData: item),
+          Toggle(toggleData: item.toggleData),
         ],
       ),
     );

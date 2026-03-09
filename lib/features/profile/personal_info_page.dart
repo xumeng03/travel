@@ -176,6 +176,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
             label: 'First Name',
             controller: _firstNameController,
             icon: Icons.person_outline,
+            // name：针对姓名优化，iOS 上会启用首字母自动大写
             keyboardType: TextInputType.name,
           ),
           const SizedBox(height: 20),
@@ -183,6 +184,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
             label: 'Last Name',
             controller: _lastNameController,
             icon: Icons.person_outline,
+            // name：针对姓名优化，iOS 上会启用首字母自动大写
             keyboardType: TextInputType.name,
           ),
           const SizedBox(height: 20),
@@ -190,6 +192,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
             label: 'Email',
             controller: _emailController,
             icon: Icons.mail_outline,
+            // emailAddress：显示带 @ 和 . 的邮件专用键盘布局
             keyboardType: TextInputType.emailAddress,
           ),
           const SizedBox(height: 20),
@@ -197,6 +200,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
             label: 'Phone Number',
             controller: _phoneController,
             icon: Icons.phone_outlined,
+            // phone：显示数字拨号盘，包含 + * # 等电话符号
             keyboardType: TextInputType.phone,
           ),
           const SizedBox(height: 20),
@@ -204,6 +208,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
             label: 'Date of Birth',
             controller: _dobController,
             icon: Icons.calendar_today_outlined,
+            // readOnly：禁止键盘弹出，点击时改为触发 onTap 打开日期选择器
             readOnly: true,
             onTap: () => _pickDate(context),
           ),
@@ -213,6 +218,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
             controller: _addressController,
             icon: Icons.location_on_outlined,
             maxLines: 3,
+            // streetAddress：针对地址输入优化，Android 上会关闭自动更正
             keyboardType: TextInputType.streetAddress,
           ),
           const SizedBox(height: 24),

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:travel/common/models/ToggleData.dart';
-import 'package:travel/common/models/action_item.dart';
+import 'package:travel/common/models/ActionMenuData.dart';
+import 'package:travel/common/models/PrivacyMenuData.dart';
 import 'package:travel/common/widgets/Toggle.dart';
 
 const _blue = Color(0xFF176FF2);
@@ -17,29 +18,29 @@ class PrivacySecurityPage extends StatefulWidget {
 
 class _PrivacySecurityPageState extends State<PrivacySecurityPage> {
   /// 隐私开关列表（实际项目中数据来自 API）
-  final List<ToggleData> _toggleItems = [
-    ToggleData(
+  final List<PrivacyMenuData> _toggleItems = [
+    PrivacyMenuData(
       title: 'Profile Visibility',
       subtitle: 'Make your profile visible to others',
-      isOn: true,
+      toggleData: ToggleData(isOn: true),
     ),
-    ToggleData(
+    PrivacyMenuData(
       title: 'Activity Status',
       subtitle: "Show when you're active",
-      isOn: false,
+      toggleData: ToggleData(isOn: false),
     ),
-    ToggleData(
+    PrivacyMenuData(
       title: 'Location Sharing',
       subtitle: 'Share your location',
-      isOn: true,
+      toggleData: ToggleData(isOn: true),
     ),
   ];
 
   /// 操作入口列表（纯展示，无状态，使用 const）
   static const _actionItems = [
-    ActionItem(icon: Icons.lock_outline, label: 'Change Password'),
-    ActionItem(icon: Icons.remove_red_eye_outlined, label: 'Privacy Policy'),
-    ActionItem(icon: Icons.shield_outlined, label: 'Terms of Service'),
+    ActionMenuData(icon: Icons.lock_outline, label: 'Change Password'),
+    ActionMenuData(icon: Icons.remove_red_eye_outlined, label: 'Privacy Policy'),
+    ActionMenuData(icon: Icons.shield_outlined, label: 'Terms of Service'),
   ];
 
   @override
@@ -112,7 +113,7 @@ class _PrivacySecurityPageState extends State<PrivacySecurityPage> {
 
   /// 构建单个开关项
   /// 白色圆角卡片，左侧标题+副标题，右侧自定义 Toggle
-  Widget _buildToggleItem(ToggleData item) {
+  Widget _buildToggleItem(PrivacyMenuData item) {
     return Container(
       height: 75,
       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -150,7 +151,7 @@ class _PrivacySecurityPageState extends State<PrivacySecurityPage> {
               ],
             ),
           ),
-          Toggle(toggleData: item),
+          Toggle(toggleData: item.toggleData),
         ],
       ),
     );
@@ -163,7 +164,7 @@ class _PrivacySecurityPageState extends State<PrivacySecurityPage> {
         for (final item in _actionItems)
           Padding(
             padding: const EdgeInsets.only(bottom: 12),
-            child: _buildActionItem(item),
+            child: _buildActionMenuData(item),
           ),
       ],
     );
@@ -171,7 +172,7 @@ class _PrivacySecurityPageState extends State<PrivacySecurityPage> {
 
   /// 构建单个操作入口项
   /// 白色圆角卡片，左侧蓝色图标盒子 + 标签文字
-  Widget _buildActionItem(ActionItem item) {
+  Widget _buildActionMenuData(ActionMenuData item) {
     return Container(
       height: 76,
       padding: const EdgeInsets.symmetric(horizontal: 16),
